@@ -38,7 +38,7 @@ jobs:
 
       # 6️⃣ Publier le projet dans un dossier temporaire
       - name: Publish project
-        run: dotnet publish backend.csproj -c Release -o ./back-preinscription
+        run: dotnet publish back-preinscription.csproj -c Release -o ./back-preinscription
         
       # 7️⃣ Déploiement sur le serveur VPS via SCP
       - name: Deploy via SCP
