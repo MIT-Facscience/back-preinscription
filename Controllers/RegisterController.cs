@@ -30,7 +30,14 @@ namespace backPreinscription.Controllers
         [HttpGet("portail/getallportails")]
         public IActionResult GetAllPortails(){
             var portails = _context.Portails.ToList();
-            return Ok(portails);
+            var dataReturn = new List<portailResponse>();
+            portails.ForEach(p => dataReturn.Add(new portailResponse
+            {
+                IdPortail = p.IdPortail,
+                Abbreviation = p.Abbreviation,
+                NomPortail = p.NomPortail
+            }));
+            return Ok(dataReturn);
         }
 
         [HttpGet("portail/{series}/{type}")]
