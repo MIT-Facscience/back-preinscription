@@ -20,6 +20,13 @@ namespace backPreinscription.Controllers
             _emailService = emailService;
         }
 
+        private bool IsPreinscriptionClosed()
+        {
+            var currentYear = DateTime.Now.Year;
+            var deadline = new DateTime(currentYear, 11, 15, 23, 59, 59);
+            return DateTime.Now > deadline;
+        }
+
         [HttpGet("test-email")]
         public async Task<ActionResult> TestEmail()
         {
@@ -79,10 +86,32 @@ namespace backPreinscription.Controllers
             return Ok(dataReturn);
         }
 
+        [HttpGet("status")]
+        public IActionResult GetPreinscriptionStatus()
+        {
+            var status = new PreinscriptionStatus
+            {
+                IsClosed = IsPreinscriptionClosed()
+            };
+
+            return Ok(status);
+        }
+
         [HttpPost("RegisterTry")]
         public async Task<ActionResult<Preinscription>> RegisterBachelier([FromBody] ApplicationData data)
         {
             Console.WriteLine("Data reçue : " + System.Text.Json.JsonSerializer.Serialize(data));
+            
+            if (IsPreinscriptionClosed())
+            {
+                return Problem(
+                    title: "Inscriptions fermées",
+                    detail: "Les inscriptions sont terminées. La date limite était le 15 novembre à 23h59.",
+                    statusCode: StatusCodes.Status403Forbidden,
+                    type: "https://example.com/problems/preinscription-closed"
+                );
+            }
+
             if (data == null)
             {
                 return Problem(

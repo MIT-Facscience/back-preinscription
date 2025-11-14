@@ -23,3 +23,8 @@ public class preinscriptionReturn
     public int? IdPortail { get; set; }
     public string ? ModeInscription { get; set; }
 }
+
+public class PreinscriptionStatus
+{
+    public bool IsClosed { get; set; }
+}
