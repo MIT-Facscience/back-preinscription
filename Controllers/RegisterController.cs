@@ -23,7 +23,7 @@ namespace backPreinscription.Controllers
         private bool IsPreinscriptionClosed()
         {
             var currentYear = DateTime.Now.Year;
-            var deadline = new DateTime(currentYear, 11, 15, 23, 59, 59);
+            var deadline = new DateTime(currentYear, 12, 15, 23, 59, 59);
             return DateTime.Now > deadline;
         }
 
